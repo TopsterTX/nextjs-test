@@ -1,23 +1,24 @@
 import Router, { useRouter } from "next/router";
+import MainLayout from "../../components/MainLayout";
 
-const Post = () => {
-  const router = useRouter();
-  const {
-    query: { id },
-  } = router;
-
-  const backClickHandler = () => {
-    Router.push("/posts");
-  };
-
+const Post = ({ post }) => {
   return (
-    <div>
+    <MainLayout>
       <div>
-        <h1>Post {id}</h1>
-        <button onClick={backClickHandler}>Back</button>
+        <h1>Post {post.id}</h1>
+        <p>{post.body}</p>
       </div>
-    </div>
+    </MainLayout>
   );
 };
+
+export async function getServerSideProps(context) {
+  const res = await fetch(`http://localhost:4200/posts/${context.query.id}`);
+  const post = await res.json();
+
+  return {
+    props: { post },
+  };
+}
 
 export default Post;

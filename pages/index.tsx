@@ -1,9 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
-import Link from "next/link";
 import MainLayout from "../components/MainLayout";
-import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
   return (
@@ -15,7 +12,7 @@ const Home: NextPage = () => {
         <title>Next app</title>
       </Head>
       <MainLayout>
-        <div className={styles.container}>
+        <div>
           <h1>Hello next1</h1>
         </div>
       </MainLayout>

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
 import Router from "next/router";
 
 import MainLayout from "../../components/MainLayout";
@@ -6,34 +7,46 @@ import MainLayout from "../../components/MainLayout";
 interface IPost {
   id: number;
   title: string;
+  author: string;
   body: string;
 }
 
-const Posts = () => {
-  const [posts, setPosts] = useState<IPost[]>([
-    { id: 1, title: "post test 1", body: "the first post body" },
-    { id: 2, title: "post test 2", body: "the second post body" },
-  ]);
+const Posts = ({ json }) => {
+  const [posts, setPosts] = useState<IPost[]>([]);
 
-  const postClickHandler = (id: number) => () => {
-    Router.push(`/post/${id}`);
+  const createPostHandler = () => {
+    Router.push("/post/new");
   };
+
+  useEffect(() => {
+    setPosts(json);
+  }, [json]);
 
   return (
     <MainLayout>
       <h1>Posts</h1>
+      <button onClick={createPostHandler}>New post</button>
       <ul>
         {posts.length &&
-          posts?.map((post) => (
-            <li key={post.id} onClick={postClickHandler(post.id)}>
-              <p>{post.id}</p>
-              <p>{post.title}</p>
-              <p>{post.body}</p>
+          posts.map((post) => (
+            <li key={post.id}>
+              <Link href="/post/[id]" as={`/post/${post.id}`}>
+                {post.title}
+              </Link>
             </li>
           ))}
       </ul>
     </MainLayout>
   );
 };
+
+export async function getStaticProps(context) {
+  const res = await fetch("http://localhost:4200/posts");
+  const json = await res.json();
+
+  return {
+    props: { json },
+  };
+}
 
 export default Posts;

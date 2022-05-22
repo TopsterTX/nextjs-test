@@ -1,6 +1,8 @@
 import React from "react";
 import Router from "next/router";
 
+import styles from "../../styles/Home.module.scss";
+
 const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const mainClickHandler = () => {
     Router.push("/");
@@ -23,7 +25,7 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           <button onClick={aboutClickHandler}>About</button>
         </section>
       </nav>
-      <section>{children}</section>
+      <section className={styles.container}>{children}</section>
     </div>
   );
 };
